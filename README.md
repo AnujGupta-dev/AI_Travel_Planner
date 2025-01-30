@@ -1,4 +1,4 @@
-AI Travel App
+#AI Travel App
 Welcome to the AI Travel App, a smart, personalized platform designed to help you plan your dream trips using advanced AI technology. With this app, you can easily search for destinations, view detailed itineraries, and get recommendations based on your travel history and preferences. The AI engine learns from your past travels to curate the best suggestions for future trips.
 
 Features
