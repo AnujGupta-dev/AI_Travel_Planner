@@ -83,7 +83,6 @@ const Create_trip = () => {
         .replace('{traveler}', formdata?.traveler)
         .replace('{budget}', formdata?.budget)
       console.log(FINAL_PROMPT)
-      console.log(apiKey)
 
       const result = await chatSession.sendMessage(FINAL_PROMPT)
       localStorage.setItem("data", JSON.stringify(result?.response?.text()));
