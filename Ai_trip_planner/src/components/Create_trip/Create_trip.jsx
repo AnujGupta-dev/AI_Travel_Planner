@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { AI_PROMPT, SelectBudgetOptions, SelectTravelList } from '../Utilis/Options'
 import '../Create_trip/create_trip.css'
 import { ToastContainer, toast } from 'react-toastify';
-import { apiKey, chatSession } from '../../service/AiModel';
+import {chatSession } from '../../service/AiModel';
 import AutoComplete from '../Utilis/autocomplete';
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { Login } from '../SignUp/login';
