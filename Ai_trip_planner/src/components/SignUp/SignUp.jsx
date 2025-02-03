@@ -41,6 +41,7 @@ export function SignUp() {
       })
       .then(function (response) {
         setlogIn(true)
+        setsignIn(false)
         setLoading(false)
       })
       .catch(function (error) {
@@ -53,11 +54,11 @@ export function SignUp() {
     }
   };
   const handleLoginAccountClick = () => {
-    setOpenModal(false);
     setsignIn(false)
     setlogIn(true)
   }
-
+  console.log(signIn)
+  console.log(logIn)
   return (
         <>
         {signIn ? <>
@@ -114,7 +115,7 @@ export function SignUp() {
                 />
               </div>
               <div className="w-full">
-                <Button onClick={saveToDb}>Sign Up</Button>
+                <Button onClick={saveToDb}>{loading ? <AiOutlineLoading3Quarters className="h-7 w-7 animate-spin" /> :'Sign Up'}</Button>
               </div>
               <div className="flex justify-end text-sm font-medium text-gray-500 dark:text-gray-300">
                 <button
@@ -122,13 +123,14 @@ export function SignUp() {
                   className="text-cyan-700 hover:underline dark:text-cyan-500"
                   onClick={handleLoginAccountClick} 
                 >
-                  {loading ? <AiOutlineLoading3Quarters className="h-7 w-7 animate-spin" /> : 'Login to your account'}
+                   Login to your account
                 </button>
               </div>
             </div>
           </Modal.Body>
         </Modal>
       </>:<Login/>}
+      {logIn?<Login/>:""}
       <ToastContainer/>
     </>
   );
