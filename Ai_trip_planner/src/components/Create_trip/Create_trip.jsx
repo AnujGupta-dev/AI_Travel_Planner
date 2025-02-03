@@ -21,6 +21,7 @@ const Create_trip = () => {
   const [dialog, setdialog] = useState(false)
   const [id, setid] = useState('')
   const [trip, settrip] = useState([])
+  const [fetch, setFetch] = useState(false)
 
   const handleInputChange = (name, value) => {
     setformdata({
@@ -37,13 +38,16 @@ const Create_trip = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-
+      if(fetch){
       axios.put('/api/posthistory', {
         token: token,
         travelHistory : trip
       })
         .then(function (response) {
           setid(response.data.message._id)
+          if(id){
+            navigate('/view-trip/'+ id)
+          }
         })
         .catch(function (error) {
           navigate('/create-trip/'+ id)
@@ -55,10 +59,12 @@ const Create_trip = () => {
               setloading(false)
               localStorage.setItem('token','')
           }
-        });
+        })
+      }
   }, [trip,id])
 
   const generateTripBtn = async () => {
+    setFetch(true)
     if (!formdata?.NoOfDays || !formdata?.budget || !formdata?.destination || !formdata?.traveler) {
       notify();
       return;
@@ -82,9 +88,6 @@ const Create_trip = () => {
       const result = await chatSession.sendMessage(FINAL_PROMPT)
       localStorage.setItem("data", JSON.stringify(result?.response?.text()));
       settrip(result?.response?.text())
-      if(id){
-        navigate('/view-trip/'+ id)
-      }
       setloading(false);
       console.log(result?.response?.text())
     }
@@ -110,11 +113,11 @@ const Create_trip = () => {
             </div>
             <div className='mt-[3rem]'>
               <h2 className='text-xl my-3 font-medium'>What is Your Budget?</h2>
-              <div className="grid grid-cols-3 gap-5 mt-5 mb-5">
+              <div className="xl:grid grid-cols-3 gap-5 mt-5 mb-5 flex flex-wrap ) " id='mediaquery'>
                 {SelectBudgetOptions.map((item, index) => (
                   <div key={index}
                     onClick={() => handleInputChange('budget', item.title)}
-                    className={`cursor-pointer p-4 border rounded-lg hover:shadow-lg
+                    className={`cursor-pointer p-4 border rounded-lg md:(h-[150px] w-[200px])  sm:(h-[100px] w-[180px]) hover:shadow-lg
                 ${formdata?.budget == item.title && 'shadow-lg border-cyan-500'}
                 `}>
                     <h2 className="text-3xl">{item.icon}</h2>
@@ -126,11 +129,11 @@ const Create_trip = () => {
             </div>
             <div className='mt-[3rem]'>
               <h2 className='text-xl my-3 font-medium'>Who do you plan on traveling with on your next adventure?</h2>
-              <div className="grid grid-cols-3 gap-5 mt-5">
+              <div className="xl:grid grid-cols-3 gap-5 mt-5  flex flex-wrap" id='mediaquery'>
                 {SelectTravelList.map((item, index) => (
                   <div key={index}
                     onClick={() => handleInputChange('traveler', item.people)}
-                    className={`cursor-pointer p-4 border rounded-lg hover:shadow-lg
+                    className={`cursor-pointer p-4 border rounded-lg min-w-[250px] sm:min-w-[200px] hover:shadow-lg
                   ${formdata?.traveler == item.people && 'shadow-lg border-cyan-500'}
                   `}>
                     <h2 className="text-3xl">{item.icon}</h2>
