@@ -14,7 +14,7 @@ export function SignUp() {
   const [Password, setPassword] = useState('');
   const [name, setname] = useState('');
   const [phoneno, setphoneno] = useState('');
-  const {signIn,setsignIn,logIn, setlogIn} = useContext(viewTripContext)
+  const {signIn,setsignIn,logIn, setlogIn, message} = useContext(viewTripContext)
   const [loading, setLoading] = useState(false)
 
   function onCloseModal() {
@@ -24,6 +24,9 @@ export function SignUp() {
   }
   
   useEffect(()=>{
+    if(message != ''){  
+      toast(message);
+  }
     if(signIn){
       setOpenModal(signIn);
     }
@@ -57,8 +60,6 @@ export function SignUp() {
     setsignIn(false)
     setlogIn(true)
   }
-  console.log(signIn)
-  console.log(logIn)
   return (
         <>
         {signIn ? <>

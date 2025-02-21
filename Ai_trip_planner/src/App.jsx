@@ -13,9 +13,10 @@ function App() {
   const [i, seti] = useState('')
   const [signIn, setsignIn] = useState(false)
   const [logIn, setlogIn] = useState(false)
+  const [message, setMessage] = useState('')
   
   return (
-    <viewTripContext.Provider value={{i,seti,setsignIn,signIn,logIn, setlogIn}}>
+    <viewTripContext.Provider value={{i,seti,setsignIn,signIn,logIn, setlogIn , message, setMessage}}>
         <Routes>
         <Route path='/test' element={<Test/>}/>
         <Route path='/' element={<Layout/>}>

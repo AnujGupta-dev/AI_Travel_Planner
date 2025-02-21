@@ -7,7 +7,7 @@ import FAQ from "./Faq";
 
 export default function Footer1() {
   return (
-    <>
+    <div id="faq">
       <FAQ/>
     <Footer container>
       <div className="w-full mt-[50px]">
@@ -43,7 +43,7 @@ export default function Footer1() {
           </div>
         </div>
         <Footer.Divider />
-        <div className="w-full sm:flex sm:items-center sm:justify-between">
+        <div className="w-full sm:flex sm:items-center sm:justify-between" id="contactus">
           <Footer.Copyright href="#" by="Ghumakad Travels" year={2025} />
           <div className="mt-4 flex space-x-6 sm:mt-0 sm:justify-center">
             <Footer.Icon href="#" icon={BsFacebook} />
@@ -55,6 +55,6 @@ export default function Footer1() {
         </div>
       </div>
     </Footer>
-    </>
+    </div>
   );
 }

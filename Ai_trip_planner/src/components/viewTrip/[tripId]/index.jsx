@@ -12,7 +12,7 @@ const ViewTrip = () => {
   const {i}= useContext(viewTripContext)
 
  const val = Array.from(tripId)
-  let idx = val[24] ;
+  let idx = parseInt(val[24])+1 ;
   console.log(idx)
 
   useEffect(()=>{

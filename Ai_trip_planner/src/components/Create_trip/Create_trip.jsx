@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { AI_PROMPT, SelectBudgetOptions, SelectTravelList } from '../Utilis/Options'
 import '../Create_trip/create_trip.css'
 import { ToastContainer, toast } from 'react-toastify';
-import {chatSession } from '../../service/AiModel';
+import { chatSession } from '../../service/AiModel';
 import AutoComplete from '../Utilis/Autocomplete.jsx';
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { Login } from '../SignUp/login';
@@ -40,30 +40,29 @@ const Create_trip = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-      if(fetch){
+    if (fetch) {
       axios.put('/api/posthistory', {
         token: token,
-        travelHistory : trip
+        travelHistory: trip
       })
         .then(function (response) {
           setid(response.data.message._id)
-          if(id){
-            navigate('/view-trip/'+ id)
+          if (id) {
+            navigate('/view-trip/' + id)
           }
         })
         .catch(function (error) {
-          navigate('/create-trip/'+ id)
+          navigate('/create-trip/' + id)
           toast(error.response.data.message);
           console.log(error.response);
-          if(error.response.status == 401)
-          {
-              setdialog(true)
-              setloading(false)
-              localStorage.setItem('token','')
+          if (error.response.status == 401 || error.response.status == 402) {
+            setdialog(true)
+            setloading(false)
+            localStorage.setItem('token', '')
           }
         })
-      }
-  }, [trip,id])
+    }
+  }, [trip, id])
 
   const generateTripBtn = async () => {
     setFetch(true)
@@ -77,7 +76,7 @@ const Create_trip = () => {
       setloading(false)
     }
 
-    else {     
+    else {
       setloading(true);
       const FINAL_PROMPT = AI_PROMPT
         .replace('{location}', formdata?.destination)

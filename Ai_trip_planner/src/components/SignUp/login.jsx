@@ -14,7 +14,7 @@ export function Login() {
   const [openModal, setOpenModal] = useState(true);
   const [email, setEmail] = useState('');
   const [Password, setPassword] = useState('')
-  const {logIn, setlogIn,signIn, setsignIn} = useContext(viewTripContext)
+  const {logIn, setlogIn,signIn, setsignIn , setMessage} = useContext(viewTripContext)
   const [loading, setloading] = useState(false)
   
   function onCloseModal() {
@@ -37,15 +37,15 @@ export function Login() {
             setloading(false)
             onCloseModal();
           })
-          .catch(function (error) {
-            console.log(error.response.data);
+          .catch(async function (error) {
             setloading(false)
-            if(error.response.status == 401)
+            if(error.response.status == 401 || error.response.status == 402)
             {
               setOpenModal(false)
               setsignIn(true)
-            }
-          toast(error.response.data.message)
+              setlogIn(false)
+              setMessage(error.response.data.message)
+            }          
           });
          }else{
           toast("Please fill all details")

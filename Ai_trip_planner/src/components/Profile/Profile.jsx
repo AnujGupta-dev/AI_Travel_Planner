@@ -5,13 +5,17 @@ import { ToastContainer, toast } from 'react-toastify';
 import { viewTripContext } from '../context/context';
 import { useNavigate } from 'react-router-dom';
 
+
+
 const Profile = () => {
-    const [dialog, setDialog] = useState(false)
     const [data, setData] = useState([])
     const { seti } = useContext(viewTripContext)
     const [id, setId] = useState('')
     const [photos, setPhotos] = useState({}) // Store photos by trip id
     const navigate = useNavigate();
+
+    const {setlogIn , logIn } = useContext(viewTripContext)
+    
 
     useEffect(() => {
         axios.post("/api/getuser", {
@@ -22,16 +26,16 @@ const Profile = () => {
                 setId(res.data.data._id)
             })
             .catch(function (error) {
-                toast(error);
-                console.log(error);
-                if (error.response.status === 401) {
-                    setDialog(true)
+                toast(error.response.data.message);
+                if (error.response.status === 401 || error.response.status === 402) {
+                    setlogIn(true)
                     localStorage.setItem('token', '')
                 }
             });
     }, [])
 
     const viewTripfn = (key) => {
+        console.log(id)
         console.log(key)
         seti(key+1)
         if (id) {
@@ -44,7 +48,6 @@ const Profile = () => {
             const response = await axios.get(`https://maps.gomaps.pro/maps/api/place/textsearch/json?query=${location}&key=${import.meta.env.VITE_gomapskey}`);
             return response.data.results[0]?.photos[0]?.photo_reference || null;
         } catch (err) {
-            console.error(err);
             return null;
         }
     }
@@ -77,7 +80,7 @@ const Profile = () => {
 
     return (
         <>
-            {dialog ? (
+            {logIn ? (
                 <Login />
             ) : (
                 <div className='flex items-center justify-center w-[100vw] h-[100vh]'>
@@ -88,7 +91,6 @@ const Profile = () => {
                                 if (!travelPlan) return null;
 
                                 const photoUrl = photos[travelPlan.location] || '';
-                                console.log(photos.Mumbai)
 
                                 return (
                                     <div className="w-[300px] rounded overflow-hidden shadow-lg  hover:scale-105 transition-all cursor-pointer" key={idx} onClick={() => { viewTripfn(idx) }}>
