@@ -47,7 +47,7 @@ const AutoComplete = ({setDestination}) => {
 
     return (
         <div>
-            <input type="text" placeholder="Search for a location..." value={query} onChange={(e) => setQuery(e.target.value)}   className="w-full" />
+            <input type="text" placeholder="Search for a location..." value={query} onChange={(e) => setQuery(e.target.value)}   className="w-full" onClick={()=>{setsuggestioncheck(true)}} />
             {loading && <div>Loading...</div>}
             {error && <div>{error}</div>}
             {suggestions.length > 0 && !loading && (

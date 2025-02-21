@@ -3,11 +3,13 @@ import { AI_PROMPT, SelectBudgetOptions, SelectTravelList } from '../Utilis/Opti
 import '../Create_trip/create_trip.css'
 import { ToastContainer, toast } from 'react-toastify';
 import {chatSession } from '../../service/AiModel';
-import AutoComplete from '../Utilis/autocomplete';
+import AutoComplete from '../Utilis/Autocomplete.jsx';
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { Login } from '../SignUp/login';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+
+
 
 const Create_trip = () => {
   const [formdata, setformdata] = useState({
