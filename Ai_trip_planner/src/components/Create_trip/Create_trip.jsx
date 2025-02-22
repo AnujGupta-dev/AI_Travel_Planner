@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState ,useContext} from 'react'
 import { AI_PROMPT, SelectBudgetOptions, SelectTravelList } from '../Utilis/Options'
 import '../Create_trip/create_trip.css'
 import { ToastContainer, toast } from 'react-toastify';
@@ -8,6 +8,7 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { Login } from '../SignUp/login';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { viewTripContext } from '../context/context';
 
 
 
@@ -20,10 +21,10 @@ const Create_trip = () => {
   })
 
   const [loading, setloading] = useState(false)
-  const [dialog, setdialog] = useState(false)
   const [id, setid] = useState('')
   const [trip, settrip] = useState([])
   const [fetch, setFetch] = useState(false)
+  const { logIn , setlogIn } = useContext(viewTripContext)
 
   const handleInputChange = (name, value) => {
     setformdata({
@@ -56,7 +57,7 @@ const Create_trip = () => {
           toast(error.response.data.message);
           console.log(error.response);
           if (error.response.status == 401 || error.response.status == 402) {
-            setdialog(true)
+             setlogIn(true)
             setloading(false)
             localStorage.setItem('token', '')
           }
@@ -72,7 +73,7 @@ const Create_trip = () => {
     }
 
     if (!token) {
-      setdialog(true)
+       setlogIn(true)
       setloading(false)
     }
 
@@ -95,7 +96,7 @@ const Create_trip = () => {
 
   return (
     <>
-      {dialog ? <Login /> : ''}
+      {logIn ? <Login /> : ''}
       <div className='w-[90%] m-auto mb-[70px]'>
         <div className='sm:px-10 md:px-32 lg:px-56 xl:x-10 px-5 mt-10'>
           <h2 className='font-bold text-3xl'>Tell us your travel preferences 🏕️🌴</h2>

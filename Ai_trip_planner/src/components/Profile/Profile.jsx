@@ -83,7 +83,7 @@ const Profile = () => {
             {logIn ? (
                 <Login />
             ) : (
-                <div className='flex items-center justify-center w-[100vw] h-[100vh]'>
+                <div className='flex items-center justify-center '>
                     <div className="flex flex-wrap gap-[2.5rem] w-[70%]">
                         {data && data.length > 0 ? (
                             data.map((elem, idx) => {
@@ -93,7 +93,7 @@ const Profile = () => {
                                 const photoUrl = photos[travelPlan.location] || '';
 
                                 return (
-                                    <div className="w-[300px] rounded overflow-hidden shadow-lg  hover:scale-105 transition-all cursor-pointer" key={idx} onClick={() => { viewTripfn(idx) }}>
+                                    <div className=" lg:w-[300px]  w-[200px] h-[200px] rounded overflow-hidden shadow-lg  hover:scale-105 transition-all cursor-pointer" key={idx} onClick={() => { viewTripfn(idx) }}>
                                         <img className="w-full h-[250px]" src={photoUrl || './road-trip-vacation.jpg'} alt="Travel location" />
                                         <div className="px-6 py-4">
                                             <p className="font-bold text-xl mb-2">{travelPlan.location}</p>
