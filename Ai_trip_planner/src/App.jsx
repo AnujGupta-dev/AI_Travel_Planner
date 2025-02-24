@@ -7,6 +7,7 @@ import ViewTrip from './components/viewTrip/[tripId]'
 import Profile from './components/Profile/Profile'
 import { viewTripContext } from './components/context/context'
 import { useState } from 'react'
+import HTMLcontent from './components/Utilis/HTMLcontent'
 
 function App() {
   
@@ -24,6 +25,7 @@ function App() {
           <Route path='create-trip' element={<Create_trip/>}/>
           <Route path='view-trip/:tripId' element={<ViewTrip/>}/>
           <Route path='profile' element={<Profile/>}/>
+          <Route path='explore' element={<HTMLcontent/>}/>
       </Route>
     </Routes>
     </viewTripContext.Provider>

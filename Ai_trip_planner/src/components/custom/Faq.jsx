@@ -17,7 +17,7 @@ const FAQ = () => {
     },
     {
       question: "Can I book flights through the website?",
-      answer: "Yes, we partner with major airlines to allow flight bookings directly through our platform."
+      answer: "No, not right now but we have future plans to integrate flight booking services stay tunned ."
     },
     {
       question: "How accurate are the recommendations?",
