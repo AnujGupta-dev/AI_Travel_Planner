@@ -4,8 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "node server.js",
-    "postinstall": "npm rebuild bcrypt"
+    "dev": "node server.js"
   },
   "keywords": [],
   "author": "",
