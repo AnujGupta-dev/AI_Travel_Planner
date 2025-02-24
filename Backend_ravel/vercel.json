@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "server.js" 
+    }
+  ],
+  "env": {
+    "PORT": "5000",
+    "database_url": "mongodb+srv://anujguptaaj123:lwoI5fz7r34CHNPi@cluster0.lggj1.mongodb.net/TravelAPP",
+    "JWT_SECRET": "anuj",
+    "MAIL_HOST": "smtp.gmail.com",
+    "MAIL_USER": "anujguptaaj123@gmail.com",
+    "MAIL_PASSWORD": "quynmdlqtzktmnzn"
+  }
+}
