@@ -1,4 +1,4 @@
-import React, { useEffect, useState ,useContext} from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { AI_PROMPT, SelectBudgetOptions, SelectTravelList } from '../Utilis/Options'
 import '../Create_trip/create_trip.css'
 import { ToastContainer, toast } from 'react-toastify';
@@ -24,7 +24,7 @@ const Create_trip = () => {
   const [id, setid] = useState('')
   const [trip, settrip] = useState([])
   const [fetch, setFetch] = useState(false)
-  const { logIn , setlogIn } = useContext(viewTripContext)
+  const { logIn, setlogIn } = useContext(viewTripContext)
 
   const handleInputChange = (name, value) => {
     setformdata({
@@ -47,17 +47,18 @@ const Create_trip = () => {
         travelHistory: trip
       })
         .then(function (response) {
+          console.log(response.data)
           setid(response.data.message._id)
-          if (id) {
-            navigate('/view-trip/' + id)
-          }
+          navigate('/view-trip/' + response.data.message._id)
+          setloading(false);
+          setFetch(false)
         })
         .catch(function (error) {
           navigate('/create-trip/' + id)
           toast(error.response.data.message);
           console.log(error.response);
           if (error.response.status == 401 || error.response.status == 402) {
-             setlogIn(true)
+            setlogIn(true)
             setloading(false)
             localStorage.setItem('token', '')
           }
@@ -73,7 +74,7 @@ const Create_trip = () => {
     }
 
     if (!token) {
-       setlogIn(true)
+      setlogIn(true)
       setloading(false)
     }
 
@@ -89,7 +90,6 @@ const Create_trip = () => {
       const result = await chatSession.sendMessage(FINAL_PROMPT)
       localStorage.setItem("data", JSON.stringify(result?.response?.text()));
       settrip(result?.response?.text())
-      setloading(false);
       console.log(result?.response?.text())
     }
   }

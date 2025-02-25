@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   server:{
     proxy:{
-      '/api':'ai-travel-planner-pdaz.vercel.app'
+      '/api':'http://localhost:5000/'
     }
   },
   plugins: [react()],
