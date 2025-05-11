@@ -94,7 +94,7 @@ const Profile = () => {
 
                                 return (
                                     <div className=" w-[300px]  rounded overflow-hidden shadow-lg  hover:scale-105 transition-all cursor-pointer" key={idx} onClick={() => { viewTripfn(idx) }}>
-                                        <img className="w-full h-[250px]" src={photoUrl || './road-trip-vacation.jpg'} alt="Travel location" />
+                                        <img className="w-full h-[250px]" src={photoUrl || './road-trip-vacation.jpg'} onError={e => { e.target.onerror = null; e.target.src = '/road-trip-vacation.jpg'; }} alt="Travel location" />
                                         <div className="px-6 py-4">
                                             <p className="font-bold text-xl mb-2">{travelPlan.location}</p>
                                         </div>
