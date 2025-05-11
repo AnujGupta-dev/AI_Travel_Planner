@@ -14,7 +14,7 @@ app.use("/api" , router)
 dbconnect();
 
 app.get('/',(req,res)=>{
-    res.send("Home page babay")
+    res.send("Home page baby")
 })
 
 app.listen(PORT , ()=>{
