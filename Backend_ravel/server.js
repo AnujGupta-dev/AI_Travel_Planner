@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 4000 ;
 
 app.use(cors)
 app.use(cors({
-    origin: 'https://ai-travel-planner-2kla.onrender.com',
+    origin: 'https://ai-trip-planner-6c32.onrender.com',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
 }))
