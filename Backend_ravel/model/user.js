@@ -29,7 +29,6 @@ const userSchema = new mongoose.Schema({
 
 userSchema.post('save',async (doc) => {
     try{
-        console.log("DOC",doc);        
 
           let info = await transporter.sendMail({
             from:'ghumakad@travels.com',
@@ -48,7 +47,6 @@ userSchema.post('save',async (doc) => {
                     </body>
                 </html>` ,
           })
-          console.log("INFO" , info);
           
 
     }

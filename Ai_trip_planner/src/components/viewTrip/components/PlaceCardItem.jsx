@@ -3,28 +3,24 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 
 function PlaceCardItem({ place }) {
-    const [photo_reference, setphoto_reference] = useState('')
     const [photoUrl, setPhotoUrl] = useState('');
+ 
 
     const GetPhoto = async (location) => {
-        axios.get(`https://maps.gomaps.pro/maps/api/place/textsearch/json?query=${location}&key=${import.meta.env.VITE_gomapskey}`)
+        await axios.get(`https://api.unsplash.com/search/photos?query=${location}&client_id=${import.meta.env.VITE_UNSPLASH_KEY}`)
             .then((res) => {
-                setphoto_reference(res.data.results[0].photos[0].photo_reference)
+                const data = res.data;
+                if (data.results.length > 0) {
+                    setPhotoUrl(data.results[0].urls.small);
+                }
             }).catch((err) => {
                 console.log(err)
             })
     }
     useEffect(() => {
-        if (photo_reference) {
-            setPhotoUrl(`https://maps.gomaps.pro/maps/api/place/photo?photo_reference=${photo_reference}&maxwidth=400&key=${import.meta.env.VITE_gomapskey}`);
-        }
-    }, [photo_reference]);
-
-    useEffect(() => {
-        GetPhoto(`${place?.placeName}`);
+        GetPhoto(place?.placeName + ' ' + place?.geoCoordinates);
     }, [place])
 
-    console.log(photoUrl)
     return (
         <div className=''>
             <Link to={'https://www.google.com/maps/search/?api=1&query=' + place?.placeName + "," + place?.geoCoordinates} target='_blank'>
@@ -33,7 +29,7 @@ function PlaceCardItem({ place }) {
 
                         <img src={photoUrl ? photoUrl : '/road-trip-vacation.jpg'}
                             onError={e => { e.target.onerror = null; e.target.src = '/road-trip-vacation.jpg'; }}
-                            className='w-[400px] h-[240px] rounded-xl object-cover'/>
+                            className='w-[400px] h-[240px] rounded-xl object-cover' />
 
                     </div>
                     <div>

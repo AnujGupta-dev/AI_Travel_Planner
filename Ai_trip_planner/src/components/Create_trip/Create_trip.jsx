@@ -67,25 +67,31 @@ const Create_trip = () => {
   }, [trip, id])
 
   const generateTripBtn = async () => {
-    setFetch(true)
+    await axios.get('api/protected', {
+      token: token
+    }).then((res)=>{
+      if(res.data.success){
+      setlogIn(false);
+      setloading(true);}
+    }).catch(() => {
+        setlogIn(true),
+        setloading(false)
+        setFetch(false)
+        localStorage.setItem('token', '')
+    }
+    )
     if (!formdata?.NoOfDays || !formdata?.budget || !formdata?.destination || !formdata?.traveler) {
       notify();
       return;
     }
-
-    if (!token) {
-      setlogIn(true)
-      setloading(false)
-    }
-
     else {
+       setFetch(true)
       setloading(true);
       const FINAL_PROMPT = AI_PROMPT
         .replace('{location}', formdata?.destination)
         .replace('{totalDays}', formdata?.NoOfDays)
         .replace('{traveler}', formdata?.traveler)
         .replace('{budget}', formdata?.budget)
-      console.log(FINAL_PROMPT)
 
       const result = await chatSession.sendMessage(FINAL_PROMPT)
       localStorage.setItem("data", JSON.stringify(result?.response?.text()));

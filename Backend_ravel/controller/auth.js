@@ -2,12 +2,13 @@ import jwt from "jsonwebtoken"
 
 export const auth = (req,res,next)=>{
     try{
-            const token =  req.body.token 
+            const token =  req.body.token ;
 
             if(!token ){
                 res.status(401).json({
-                    message:"Login expired",
-                    sucess:false
+                    message:"Login failed",
+                    sucess:false,
+                    error:"Token missing"
                 })
             }
             try{
@@ -18,7 +19,7 @@ export const auth = (req,res,next)=>{
             catch(err){
                 return res.status(402).json({
                     success: false,
-                    message: "token is invalid " + err.message
+                    message: "Login expired " + err.message
                 })
             }
     }

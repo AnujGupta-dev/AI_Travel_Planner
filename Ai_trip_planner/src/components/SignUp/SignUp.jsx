@@ -14,7 +14,7 @@ export function SignUp() {
   const [Password, setPassword] = useState('');
   const [name, setname] = useState('');
   const [phoneno, setphoneno] = useState('');
-  const {signIn,setsignIn,logIn, setlogIn, message} = useContext(viewTripContext)
+  const { signIn, setsignIn, logIn, setlogIn, message } = useContext(viewTripContext)
   const [loading, setLoading] = useState(false)
 
   function onCloseModal() {
@@ -22,37 +22,39 @@ export function SignUp() {
     setsignIn(false)
     setEmail('');
   }
-  
-  useEffect(()=>{
-    if(message != ''){  
+
+  useEffect(() => {
+    if (message != '') {
       toast(message);
-  }
-    if(signIn){
+    }
+    if (signIn) {
       setOpenModal(signIn);
     }
-  },[signIn])
+  }, [signIn])
 
   const saveToDb = async () => {
-    if(email && Password && phoneno  && name ){
+    if (email && Password && phoneno && name) {
       setLoading(true)
       axios
-      .post('/api/signup', {
-        email: email,
-        password: Password,
-        phoneno: phoneno,
-        name: name
-      })
-      .then(function (response) {
-        setlogIn(true)
-        setsignIn(false)
-        setLoading(false)
-      })
-      .catch(function (error) {
-        console.log(error.response.data);
-        setLoading(false)
-        toast(error.response.data.message)
-      });
-    }else{
+        .post('/api/signup', {
+          email: email,
+          password: Password,
+          phoneno: phoneno,
+          name: name
+        })
+        .then(function (response) {
+          toast("Logged in sucessfully")
+          localStorage.setItem('token', response.data.token)
+          setlogIn(false)
+          setsignIn(false)
+          setLoading(false)
+        })
+        .catch(function (error) {
+          console.log(error.response.data);
+          setLoading(false)
+          toast(error.response.data.message)
+        });
+    } else {
       toast("Please fill all details")
     }
   };
@@ -61,8 +63,8 @@ export function SignUp() {
     setlogIn(true)
   }
   return (
-        <>
-        {signIn ? <>
+    <>
+      {signIn ? <>
         <Modal show={openModal} size="md" onClose={onCloseModal} popup>
           <Modal.Header />
           <Modal.Body>
@@ -116,23 +118,23 @@ export function SignUp() {
                 />
               </div>
               <div className="w-full">
-                <Button onClick={saveToDb}>{loading ? <AiOutlineLoading3Quarters className="h-7 w-7 animate-spin" /> :'Sign Up'}</Button>
+                <Button onClick={saveToDb}>{loading ? <AiOutlineLoading3Quarters className="h-7 w-7 animate-spin" /> : 'Sign Up'}</Button>
               </div>
               <div className="flex justify-end text-sm font-medium text-gray-500 dark:text-gray-300">
                 <button
                   href="#"
                   className="text-cyan-700 hover:underline dark:text-cyan-500"
-                  onClick={handleLoginAccountClick} 
+                  onClick={handleLoginAccountClick}
                 >
-                   Login to your account
+                  Login to your account
                 </button>
               </div>
             </div>
           </Modal.Body>
         </Modal>
-      </>:<Login/>}
-      {logIn?<Login/>:""}
-      <ToastContainer/>
+      </> : <Login />}
+      {logIn ? <Login /> : ""}
+      <ToastContainer />
     </>
   );
 }

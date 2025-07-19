@@ -2,22 +2,19 @@ import axios from 'axios';
 import React, { useState,useEffect } from 'react'
 
 function InfoSection({trip}) {
-    const [photo_reference, setphoto_reference] = useState('')
+
     const [photoUrl,setPhotoUrl] = useState('');
     const GetPhoto = async(location)=>{
-        axios.get(`https://maps.gomaps.pro/maps/api/place/textsearch/json?query=${location}&key=${import.meta.env.VITE_gomapskey}`)
+        await axios.get(`https://api.unsplash.com/search/photos?query=${location}&client_id=${import.meta.env.VITE_UNSPLASH_KEY}`)
         .then((res)=>{
-            setphoto_reference(res.data.results[0].photos[0].photo_reference)
+           const data = res.data;
+            if (data.results.length > 0) {
+          setPhotoUrl(data.results[0].urls.small); 
+        }
         }).catch((err)=>{
             console.log(err)
         })
     }
-    useEffect(() => {
-        if (photo_reference) {
-            setPhotoUrl(`https://maps.gomaps.pro/maps/api/place/photo?photo_reference=${photo_reference}&maxwidth=600&key=${import.meta.env.VITE_gomapskey}`);
-        }
-    }, [photo_reference]);
-
         useEffect(()=>{
            GetPhoto(trip?.travelPlan?.location);
         },[trip])

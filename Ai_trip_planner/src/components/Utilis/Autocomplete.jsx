@@ -8,41 +8,42 @@ const AutoComplete = ({setDestination}) => {
     const [suggestioncheck, setsuggestioncheck] = useState(true)
 
     useEffect(() => {
-        if(suggestioncheck){
-            if (query.length > 0) {
-                const fetchSuggestions = async () => {
-                    setLoading(true);
-                    setError(null); 
-                    try {
-                        const response = await fetch(
-                            `https://maps.gomaps.pro/maps/api/place/queryautocomplete/json?input=${query}&key=${import.meta.env.VITE_gomapskey}`
-                        );
-                        const data = await response.json();
-    
-                        if (data.status === "OK") {
-                            setSuggestions(data.predictions);
-                        } else {
-                            setSuggestions([]);
-                        }
-                    } catch (error) {
-                        setError('Failed to fetch suggestions');
-                    } finally {
-                        setLoading(false);
+    if (suggestioncheck) {
+        if (query.length > 3) {
+            const fetchSuggestions = async () => {
+                setLoading(true);
+                setError(null);
+                try {
+                    const response = await fetch(
+                        `/api/autocomplete?q=${encodeURIComponent(query)}`
+                    );
+                    const data = await response.json();
+
+                    if (data.suggestions) {
+                        setSuggestions(data.suggestions);
+                    } else {
+                        setSuggestions([]);
                     }
-                };
-    
-                fetchSuggestions();
-            } else {
-                setSuggestions([]);
-            }
+                } catch (error) {
+                    setError('Failed to fetch suggestions');
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            fetchSuggestions();
+        } else {
+            setSuggestions([]);
         }
-    }, [query]);
+    }
+}, [query]);
+
 
     const selectFunction = (suggestion) => {
         setsuggestioncheck(false);
         setSuggestions([]);
-        setQuery(suggestion.structured_formatting.main_text);
-        setDestination(suggestion.structured_formatting.main_text);
+        setQuery(`${suggestion.name}${suggestion.country ? `, ${suggestion.country}` : ''}`);
+        setDestination(`${suggestion.name}${suggestion.country ? `, ${suggestion.country}` : ''}`);
     };
 
     return (
@@ -51,11 +52,11 @@ const AutoComplete = ({setDestination}) => {
             {loading && <div>Loading...</div>}
             {error && <div>{error}</div>}
             {suggestions.length > 0 && !loading && (
-                <ul className="suggestions-list">
+                <ul className="suggestions-list max-h-40 overflow-y-scroll pb-5">
                     {suggestions.map((suggestion, index) => (
-                        <li key={index}>
-                            <button onClick={() => selectFunction(suggestion)} className="w-full" >
-                                {suggestion.structured_formatting.main_text}
+                        <li key={index} className=''>
+                            <button onClick={() => selectFunction(suggestion)} className="w-full text-md text-left pl-5 " >
+                               {suggestion.name}{suggestion.country ? `, ${suggestion.country}` : ''}
                             </button>
                         </li>
                     ))}

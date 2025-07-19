@@ -32,11 +32,22 @@ export const signUp = async (req,res)=>{
                 })
             }
 
-            let user = await User.create({name,email,password:hashedPassword,phoneno})
+            let user = await User.create({name,email,password:hashedPassword,phoneno}) 
+
+            const payload = {
+                email : user.email,
+                id : user._id,
+            };
+
+            let token = jwt.sign(payload,process.env.JWT_SECRET,{
+                expiresIn:"24h"
+            })
+
             res.status(200).json({
                 message:"User created sucessfully",
                 sucess:true,
                 data:user ,
+                token:token
             });
     }
     catch(err){

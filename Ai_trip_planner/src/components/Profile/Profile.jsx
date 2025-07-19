@@ -1,82 +1,77 @@
 import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react';
 import { Login } from '../SignUp/login';
 import { ToastContainer, toast } from 'react-toastify';
 import { viewTripContext } from '../context/context';
 import { useNavigate } from 'react-router-dom';
 
-
-
 const Profile = () => {
-    const [data, setData] = useState([])
-    const { seti } = useContext(viewTripContext)
-    const [id, setId] = useState('')
-    const [photos, setPhotos] = useState({}) // Store photos by trip id
+    const [data, setData] = useState([]);
+    const { seti, setlogIn, logIn } = useContext(viewTripContext);
+    const [id, setId] = useState('');
+    const [photos, setPhotos] = useState({});
     const navigate = useNavigate();
 
-    const {setlogIn , logIn } = useContext(viewTripContext)
-    
-
+    // Get user travel history
     useEffect(() => {
         axios.post("/api/getuser", {
             token: localStorage.getItem('token'),
         })
             .then((res) => {
-                setData(res.data.data.travelHistory)
-                setId(res.data.data._id)
+                setData(res.data.data.travelHistory);
+                setId(res.data.data._id);
             })
-            .catch(function (error) {
-                toast(error.response.data.message);
-                if (error.response.status === 401 || error.response.status === 402) {
-                    setlogIn(true)
-                    localStorage.setItem('token', '')
+            .catch((error) => {
+                toast(error.response?.data?.message || "An error occurred");
+                if (error.response?.status === 401 || error.response?.status === 402) {
+                    setlogIn(true);
+                    localStorage.setItem('token', '');
                 }
             });
-    }, [])
+    }, []);
 
+    // Navigate to trip detail
     const viewTripfn = (key) => {
-        console.log(id)
-        console.log(key)
-        seti(key+1)
+        seti(key + 1);
         if (id) {
-            navigate('/view-trip/' + id + key)
+            navigate('/view-trip/' + id + key);
         }
-    }
+    };
 
+    // Fetch image from Unsplash
     const GetPhoto = async (location) => {
         try {
-            const response = await axios.get(`https://maps.gomaps.pro/maps/api/place/textsearch/json?query=${location}&key=${import.meta.env.VITE_gomapskey}`);
-            return response.data.results[0]?.photos[0]?.photo_reference || null;
+            const res = await axios.get(`https://api.unsplash.com/search/photos?query=${location}&client_id=${import.meta.env.VITE_UNSPLASH_KEY}`);
+            if (res.data.results.length > 0) {
+                return res.data.results[0].urls.small;
+            }
+            return null;
         } catch (err) {
+            console.log(err);
             return null;
         }
-    }
+    };
 
-    const fetchPhotoUrl = async (location) => {
-        const photoReference = await GetPhoto(location);
-        if (photoReference) {
-            return `https://maps.gomaps.pro/maps/api/place/photo?photo_reference=${photoReference}&maxwidth=600&key=${import.meta.env.VITE_gomapskey}`;
-        }
-        return null;
-    }
-
+    // Fetch and store photos for all trips
     useEffect(() => {
         const fetchPhotos = async () => {
             const newPhotos = {};
             for (const elem of data) {
                 const travelPlan = JSON.parse(elem)[0]?.travelPlan;
                 if (travelPlan && travelPlan.location) {
-                    const photoUrl = await fetchPhotoUrl(travelPlan.location);
+                    const photoUrl = await GetPhoto(travelPlan.location);
                     if (photoUrl) {
                         newPhotos[travelPlan.location] = photoUrl;
                     }
                 }
             }
             setPhotos(newPhotos);
-        }
+        };
 
-        fetchPhotos();
-    }, [data])
+        if (data.length > 0) {
+            fetchPhotos();
+        }
+    }, [data]);
 
     return (
         <>
@@ -90,11 +85,20 @@ const Profile = () => {
                                 const travelPlan = JSON.parse(elem)[0]?.travelPlan;
                                 if (!travelPlan) return null;
 
-                                const photoUrl = photos[travelPlan.location] || '';
+                                const photoUrl = photos[travelPlan.location] || './road-trip-vacation.jpg';
 
                                 return (
-                                    <div className=" w-[300px]  rounded overflow-hidden shadow-lg  hover:scale-105 transition-all cursor-pointer" key={idx} onClick={() => { viewTripfn(idx) }}>
-                                        <img className="w-full h-[250px]" src={photoUrl || './road-trip-vacation.jpg'} onError={e => { e.target.onerror = null; e.target.src = '/road-trip-vacation.jpg'; }} alt="Travel location" />
+                                    <div
+                                        className="w-[300px] rounded overflow-hidden shadow-lg hover:scale-105 transition-all cursor-pointer"
+                                        key={idx}
+                                        onClick={() => viewTripfn(idx)}
+                                    >
+                                        <img
+                                            className="w-full h-[250px] object-cover"
+                                            src={photoUrl}
+                                            onError={e => { e.target.onerror = null; e.target.src = '/road-trip-vacation.jpg'; }}
+                                            alt={travelPlan.location}
+                                        />
                                         <div className="px-6 py-4">
                                             <p className="font-bold text-xl mb-2">{travelPlan.location}</p>
                                         </div>
@@ -109,7 +113,7 @@ const Profile = () => {
             )}
             <ToastContainer />
         </>
-    )
-}
+    );
+};
 
 export default Profile;
