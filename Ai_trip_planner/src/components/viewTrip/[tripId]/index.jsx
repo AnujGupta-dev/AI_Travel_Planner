@@ -13,7 +13,6 @@ const ViewTrip = () => {
 
  const val = Array.from(tripId)
   let idx = parseInt(val[24])+1 ;
-  console.log(idx)
 
   useEffect(()=>{
       axios.post("/api/getuser",{

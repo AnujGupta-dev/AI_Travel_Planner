@@ -56,7 +56,6 @@ const Create_trip = () => {
         .catch(function (error) {
           navigate('/create-trip/' + id)
           toast(error.response.data.message);
-          console.log(error.response);
           if (error.response.status == 401 || error.response.status == 402) {
             setlogIn(true)
             setloading(false)
@@ -96,7 +95,6 @@ const Create_trip = () => {
       const result = await chatSession.sendMessage(FINAL_PROMPT)
       localStorage.setItem("data", JSON.stringify(result?.response?.text()));
       settrip(result?.response?.text())
-      console.log(result?.response?.text())
     }
   }
 
