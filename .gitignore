@@ -1,1 +1,4 @@
-.env
+Ai_trip_planner/node_modules/
+Backend_ravel/node_modules/
+Ai_trip_planner/.env
+Backend_ravel/.env
