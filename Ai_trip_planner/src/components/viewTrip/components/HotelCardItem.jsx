@@ -1,14 +1,14 @@
 // import { GetPlaceDetails, PHOTO_REF_URL } from '@/service/GlobalApi';
-import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import api from '../../../api/axios';
 
 
 function HotelCardItem({ item }) {
     const [photoUrl, setPhotoUrl] = useState('');
 
     const GetPhoto = async (location) => {
-        await axios.get(`https://api.unsplash.com/search/photos?query=${location}&client_id=${import.meta.env.VITE_UNSPLASH_KEY}`)
+        await api.get(`https://api.unsplash.com/search/photos?query=${location}&client_id=${import.meta.env.VITE_UNSPLASH_KEY}`)
             .then((res) => {
                 const data = res.data;
                 if (data.results.length > 0) {

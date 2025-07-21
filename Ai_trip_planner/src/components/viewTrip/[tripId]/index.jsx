@@ -1,10 +1,10 @@
-import axios from 'axios';
 import React, { useContext, useEffect,useState } from 'react'
 import { useParams } from 'react-router-dom'
 import InfoSection from '../components/InfoSection';
 import Hotels from '../components/Hotels';
 import TripPlace from '../components/TripPlace';
 import { viewTripContext } from '../../context/context';
+import api from '../../../api/axios';
 
 const ViewTrip = () => {
   const {tripId} = useParams();
@@ -15,7 +15,7 @@ const ViewTrip = () => {
   let idx = parseInt(val[24])+1 ;
 
   useEffect(()=>{
-      axios.post("/api/getuser",{
+      api.post("/api/getuser",{
         token : localStorage.getItem('token'),
         _id:tripId
       }).

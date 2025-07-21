@@ -1,10 +1,10 @@
 import React, { useEffect ,useState} from 'react'
-import axios from 'axios'
+import api from '../api/axios';
 
 const Test = () => {
     const [jokes, setJokes] = useState([]);
     useEffect(()=>{
-        axios.get('/api/jokes')
+        api.get('/api/jokes')
         .then((response)=>{
             console.log(response.data)
             setJokes(response.data)

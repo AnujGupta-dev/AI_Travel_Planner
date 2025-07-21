@@ -7,8 +7,8 @@ import AutoComplete from '../Utilis/Autocomplete.jsx';
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { Login } from '../SignUp/login';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { viewTripContext } from '../context/context';
+import api from '../../api/axios.js';
 
 
 
@@ -42,7 +42,7 @@ const Create_trip = () => {
 
   useEffect(() => {
     if (fetch) {
-      axios.put('/api/posthistory', {
+      api.put('/api/posthistory', {
         token: token,
         travelHistory: trip
       })
@@ -66,7 +66,7 @@ const Create_trip = () => {
   }, [trip, id])
 
   const generateTripBtn = async () => {
-    await axios.get('api/protected', {
+    await api.get('api/protected', {
       token: token
     }).then((res)=>{
       if(res.data.success){

@@ -1,12 +1,10 @@
-"use client";
-
 import { Button, Checkbox, Label, Modal, TextInput } from "flowbite-react";
 import { useContext, useEffect, useState } from "react";
-import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import { viewTripContext } from "../context/context";
 import { Login } from "./login";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import api from "../../api/axios";
 
 export function SignUp() {
   const [openModal, setOpenModal] = useState(true);
@@ -35,8 +33,7 @@ export function SignUp() {
   const saveToDb = async () => {
     if (email && Password && phoneno && name) {
       setLoading(true)
-      axios
-        .post('/api/signup', {
+      api.post('/api/signup', {
           email: email,
           password: Password,
           phoneno: phoneno,

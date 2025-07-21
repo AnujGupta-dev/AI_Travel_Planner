@@ -1,9 +1,9 @@
-import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { Login } from '../SignUp/login';
 import { ToastContainer, toast } from 'react-toastify';
 import { viewTripContext } from '../context/context';
 import { useNavigate } from 'react-router-dom';
+import api from '../../api/axios';
 
 const Profile = () => {
     const [data, setData] = useState([]);
@@ -14,7 +14,7 @@ const Profile = () => {
 
     // Get user travel history
     useEffect(() => {
-        axios.post("/api/getuser", {
+        api.post("/api/getuser", {
             token: localStorage.getItem('token'),
         })
             .then((res) => {
@@ -41,7 +41,7 @@ const Profile = () => {
     // Fetch image from Unsplash
     const GetPhoto = async (location) => {
         try {
-            const res = await axios.get(`https://api.unsplash.com/search/photos?query=${location}&client_id=${import.meta.env.VITE_UNSPLASH_KEY}`);
+            const res = await api.get(`https://api.unsplash.com/search/photos?query=${location}&client_id=${import.meta.env.VITE_UNSPLASH_KEY}`);
             if (res.data.results.length > 0) {
                 return res.data.results[0].urls.small;
             }

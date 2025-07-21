@@ -1,13 +1,10 @@
-
-"use client";
-
 import { Button, Checkbox, Label, Modal, TextInput } from "flowbite-react";
 import { useContext, useState } from "react";
-import axios from 'axios';
 import { SignUp } from "./SignUp";
 import { ToastContainer, toast } from 'react-toastify';
 import { viewTripContext } from "../context/context";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import api from "../../api/axios";
 
 
 export function Login() {
@@ -27,7 +24,7 @@ export function Login() {
   const checkInDb = async ()=>{
          if(email && Password){
           setloading(true)
-          axios.post('/api/login', {
+          api.post('/api/login', {
             email: email,
             password : Password
           })
