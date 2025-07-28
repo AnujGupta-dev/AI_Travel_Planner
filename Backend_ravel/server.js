@@ -9,7 +9,11 @@ const app = express();
 dotenv.config()
 const PORT = process.env.PORT || 4000 ;
 
-app.use(cors())
+app.use(cors({
+    origin: 'https://ai-travel-planner-two-beta.vercel.app',
+    credentials: true
+}));
+
 
 app.use(express.json());
 
