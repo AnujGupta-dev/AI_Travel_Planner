@@ -25,6 +25,7 @@ const AutoComplete = ({setDestination}) => {
                         setSuggestions([]);
                     }
                 } catch (error) {
+                    console.log(error);
                     setError('Failed to fetch suggestions');
                 } finally {
                     setLoading(false);
