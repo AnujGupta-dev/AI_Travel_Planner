@@ -15,7 +15,7 @@ const AutoComplete = ({setDestination}) => {
                 setError(null);
                 try {
                     const response = await fetch(
-                        `/api/autocomplete?q=${encodeURIComponent(query)}`
+                        `https://ai-travel-planner-backend-ctda.onrender.com/api/autocomplete?q=${encodeURIComponent(query)}`
                     );
                     const data = await response.json();
 
