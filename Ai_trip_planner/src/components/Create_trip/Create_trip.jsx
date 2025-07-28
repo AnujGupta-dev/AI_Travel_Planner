@@ -67,7 +67,7 @@ const Create_trip = () => {
 
   const generateTripBtn = async () => {
     await api.get('api/protected', {
-      token: token
+      token: localStorage.getItem('token')
     }).then((res)=>{
       if(res.data.success){
       setlogIn(false);
