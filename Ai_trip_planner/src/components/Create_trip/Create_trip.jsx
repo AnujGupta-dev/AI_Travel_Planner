@@ -66,25 +66,30 @@ const Create_trip = () => {
   }, [trip, id])
 
   const generateTripBtn = async () => {
-    await api.get('api/protected', {
-      token: localStorage.getItem('token')
-    }).then((res)=>{
-      if(res.data.success){
-      setlogIn(false);
-      setloading(true);}
-    }).catch(() => {
-        setlogIn(true),
-        setloading(false)
-        setFetch(false)
-        localStorage.setItem('token', '')
+    try {
+      const token = localStorage.getItem('token');
+      const res = await api.get('api/protected', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (res.data.success) {
+        setlogIn(false);
+        setloading(true);
+      }
+    } catch (err) {
+      setlogIn(true);
+      setloading(false);
+      setFetch(false);
+      localStorage.setItem('token', '');
     }
-    )
     if (!formdata?.NoOfDays || !formdata?.budget || !formdata?.destination || !formdata?.traveler) {
       notify();
       return;
     }
     else {
-       setFetch(true)
+      setFetch(true)
       setloading(true);
       const FINAL_PROMPT = AI_PROMPT
         .replace('{location}', formdata?.destination)

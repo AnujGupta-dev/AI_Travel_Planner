@@ -1,7 +1,7 @@
 import express from 'express';
 import {postHistory , getHistory} from '../controller/travelHistory.js';
 import { login, signUp } from '../controller/signIn.js';
-import { auth } from '../controller/auth.js';
+import { auth, auth2 } from '../controller/auth.js';
 import { body, query } from "express-validator";
 import { autocomplete } from '../controller/autocomplete.js';
 
@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.put("/posthistory" ,auth , postHistory);
 router.post('/getuser',auth,getHistory)
-router.get('/protected',auth,(req,res)=>{
+router.get('/protected',auth2,(req,res)=>{
     res.status(200).json({
         message:"Protected route accessed",
         success:true
