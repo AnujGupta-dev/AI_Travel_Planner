@@ -66,6 +66,10 @@ const Create_trip = () => {
   }, [trip, id])
 
   const generateTripBtn = async () => {
+    if (!formdata?.NoOfDays || !formdata?.budget || !formdata?.destination || !formdata?.traveler) {
+      notify();
+      return;
+    }
     try {
       const token = localStorage.getItem('token');
       const res = await api.get('api/protected', {
@@ -84,23 +88,18 @@ const Create_trip = () => {
       setFetch(false);
       localStorage.setItem('token', '');
     }
-    if (!formdata?.NoOfDays || !formdata?.budget || !formdata?.destination || !formdata?.traveler) {
-      notify();
-      return;
-    }
-    else {
-      setFetch(true)
-      setloading(true);
-      const FINAL_PROMPT = AI_PROMPT
-        .replace('{location}', formdata?.destination)
-        .replace('{totalDays}', formdata?.NoOfDays)
-        .replace('{traveler}', formdata?.traveler)
-        .replace('{budget}', formdata?.budget)
 
-      const result = await chatSession.sendMessage(FINAL_PROMPT)
-      localStorage.setItem("data", JSON.stringify(result?.response?.text()));
-      settrip(result?.response?.text())
-    }
+    setFetch(true)
+    setloading(true);
+    const FINAL_PROMPT = AI_PROMPT
+      .replace('{location}', formdata?.destination)
+      .replace('{totalDays}', formdata?.NoOfDays)
+      .replace('{traveler}', formdata?.traveler)
+      .replace('{budget}', formdata?.budget)
+
+    const result = await chatSession.sendMessage(FINAL_PROMPT)
+    localStorage.setItem("data", JSON.stringify(result?.response?.text()));
+    settrip(result?.response?.text())
   }
 
   return (
